@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+@*<h2>@ViewData["Title"]</h2>
+    <h3>@ViewData["Message"]</h3>*@
+
+
+
+<style>
+   
+    #map {
+        
+        height:500px;
+       
+        margin: 0;
+        padding:0;
+    }
+</style>
+
+<div id="map"></div>
+
+
+
+
+<script>
+    //mapa
+    let map;
+    // na przyszłość ?
+    let posXY = {};
+    //tablica z koordynatami podróży
+    let ridePath = [];
+    const krakow = { lat: 50.06143, lng: 19.93658 };
+
+
+    function initMap() {
+        let mapOption = {
+            center: krakow,
+            zoom: 11,
+        };
+
+        map = new google.maps.Map(document.getElementById("map"), mapOption);
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(gotPosition, failPosition)
+        };
+
+
+        function gotPosition(pos) {
+            posXY.lat = pos.coords.latitude
+            posXY.lng = pos.coords.longitude
+            map.setCenter(posXY)
+
+            ridePath.push(
+                {
+                    coords: posXY,
+                    timestamp: pos.timestamp
+                }
+            )
+        }
+
+        function failPosition(err) {
+            console.log(err);
+
+        }
+
+
+
+
+
+
+
+
+    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_edJbQpMuJA08JB6jpUFPFGTfxT-d6WI&callback=initMap"
+        async defer></script>
